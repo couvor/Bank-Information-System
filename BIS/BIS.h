@@ -7,11 +7,11 @@
 
 typedef struct user//账户结构体
 {
-    char name[100];
-    long long int IDnumber;
-    long long int account;
-    double deposit;
-    char password[100];
+    char name[100];//姓名
+    long long int IDnumber;//身份证号
+    long long int account;//账号
+    double deposit;//存款
+    char password[100];//密码
 
 }user;
 
