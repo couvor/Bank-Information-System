@@ -54,9 +54,68 @@ loading_bar();
 
 //写以下部分的内容
 //----------------------------------------------------------------------------------------
-void Add_user(){//注册账户
-    printf("null");
+
+void Add_user() //注册账户 陈华宇
+{
+    FILE *fp;
+    user new_user, temp;
+    int found = 0;
+    while(getchar()!='\n');
+
+    fp = fopen("user.dat", "ab+");
+    if (fp == NULL)
+    {
+        printf("文件打开失败！\n");
+        return;
+    }
+
+    printf("请输入姓名：");
+    scanf("%s", new_user.name);
+
+    printf("请输入身份证号：");
+    scanf("%lld", &new_user.IDnumber);
+
+    printf("请输入密码：");
+    scanf("%s", new_user.password);
+
+    printf("请输入初始存款：");
+    scanf("%lf", &new_user.deposit);
+
+    rewind(fp);
+    while (fread(&temp, sizeof(user), 1, fp))
+    {
+        if (temp.IDnumber == new_user.IDnumber)
+        {
+            found = 1;
+            break;
+        }
+    }
+
+    if (found)
+    {
+        printf("该身份证已注册，注册失败！\n");
+        fclose(fp);
+        return;
+    }
+
+    new_user.account = new_user.IDnumber % 1000000;
+
+    fwrite(&new_user, sizeof(user), 1, fp);
+
+    // 关键补充：将新用户加入users数组
+    if (usercount < 2000) {
+        users[usercount] = new_user;
+        usercount++; // 更新用户计数
+    } else {
+        printf("用户数量已达上限！\n");
+    }
+
+    printf("注册成功！\n");
+    printf("您的账号是：%lld\n", new_user.account);
+
+    fclose(fp);
 }
+
 
 void Delete_user(){//注销账户
     printf("null");
