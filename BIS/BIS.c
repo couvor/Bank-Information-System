@@ -235,9 +235,83 @@ void Withdrawal(){int i, found = -1;
     printf("当前账户余额为：%.2lf 元\n", users[found].deposit);
 }
 
-void Deposit_transfer(){//转帐
-        printf("null");
+void Deposit_transfer(){//转账  代宸旭
+    int from_idx = -1, to_idx = -1;
+    long long from_account, to_account;
+    char from_pwd[100];
+    double transfer_money;
+
+    printf("===== 转账功能 =====\n");
+    printf("请输入转出账号和密码（格式：账号 密码）：\n");
+    if (scanf("%lld %s", &from_account, from_pwd) != 2) {
+        printf("❌ 输入格式错误！请输入“数字账号+空格+密码”的格式\n");
+        int sweeper;
+        while ((sweeper = getchar()) != '\n' && sweeper != EOF);
+        return;
+    }
+
+    for (int i = 0; i < usercount; i++) {
+        if (users[i].account == from_account && strcmp(from_pwd, users[i].password) == 0) {
+            from_idx = i;
+            break;
+        }
+    }
+    if (from_idx == -1) {
+        printf("❌ 转出账号不存在或密码错误！\n");
+        return;
+    }
+
+    printf("请输入转入账号：\n");
+    if (scanf("%lld", &to_account) != 1) {
+        printf("❌ 转入账号格式错误！请输入纯数字账号\n");
+        int sweeper;
+        while ((sweeper = getchar()) != '\n' && sweeper != EOF);
+        return;
+    }
+
+    for (int i = 0; i < usercount; i++) {
+        if (users[i].account == to_account) {
+            to_idx = i;
+            break;
+        }
+    }
+    if (to_idx == -1) {
+        printf("❌ 转入账号不存在！\n");
+        return;
+    }
+
+    printf("请输入转账金额：\n");
+    if (scanf("%lf", &transfer_money) != 1) {
+        printf("❌ 金额格式错误！请输入数字（如 100.50）\n");
+        int sweeper;
+        while ((sweeper = getchar()) != '\n' && sweeper != EOF);
+        return;
+    }
+    if (transfer_money <= 0) {
+        printf("❌ 转账金额必须大于0！\n");
+        return;
+    }
+    if (transfer_money > users[from_idx].deposit) {
+        printf("❌ 余额不足！当前转出账户余额：%.2lf 元\n", users[from_idx].deposit);
+        return;
+    }
+
+    users[from_idx].deposit -= transfer_money;
+    users[to_idx].deposit += transfer_money;
+
+    FILE *fp = fopen("user.dat", "wb");
+    if (fp != NULL) {
+        for (int i = 0; i < usercount; i++) {
+            fwrite(&users[i], sizeof(user), 1, fp);
+        }
+        fclose(fp);
+    }
+
+    printf("✅ 转账成功！\n");
+    printf("👉 转出账户剩余余额：%.2lf 元\n", users[from_idx].deposit);
+    printf("👉 转入账户当前余额：%.2lf 元\n", users[to_idx].deposit);
 }
+
 void loading_bar(void) {//加载进度条函数
     const int width = 30;  // 进度条长度
 
@@ -255,8 +329,7 @@ void loading_bar(void) {//加载进度条函数
         }
         printf("] %3d%%", percent);
 
-        fflush(stdout);
-        SLEEP(50); // 越大越慢
+        fflush(stdout);        SLEEP(50); // 越大越慢
     }
     printf("\n处理完成！\n");
 }
