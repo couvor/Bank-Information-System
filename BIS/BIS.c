@@ -19,13 +19,13 @@ loading_bar();
     int userchoice=0;
     users[0]=(user){"Mouyu",13193918,2313228276,122500.6,"PASSWORD"};
     users[1]=(user){"Couvor",132345234,6868668,999999,"PASSWORD"};
-    users[2]=(user){"Bydzsh",123131233,123456,114514.19,"PASSWORD"};
+    users[2]=(user){"zsh",123131233,123456,1000,"PASSWORD"};
 
 
-    printf("=============ydy农村信用社财产管理系统==================\n");
+    printf("=============银行信息管理系统==================\n");
     printf("银行信息管理系统\n");
     printf("输入数字选择对应服务\n");
-    printf("1:存款\n2:取款\n3:转账\n4:查看账户信息\n5:创建账户\n6:注销账户\n7:为ydy歌功颂德\n0:退出\n");
+    printf("1:存款\n2:取款\n3:转账\n4:查看账户信息\n5:创建账户\n6:注销账户\n0:退出\n");
     printf("========================================================\n");    
         while(1){
      if(scanf("%d",&userchoice)!=1) {
@@ -41,7 +41,6 @@ loading_bar();
             case 4: Check_information();break;
             case 5: Add_user();break;
             case 6: Delete_user();break;
-            case 7: printf("ydy是最棒的！\n");break;
             case 0: printf("欢迎再次使用");return 0;
             default:printf("wrong input!");
         };
